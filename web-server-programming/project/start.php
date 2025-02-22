@@ -23,29 +23,29 @@
    // echo $a->sayHello();
    // echo '<BR>';
 
-   class A {
-      public function method1(){
-         return $this->method2();
+   // class A {
+   //    public function method1(){
+   //       return $this->method2();
 
-      }
-      protected function method2(){
-         return 'A';
-      }
-   }
+   //    }
+   //    protected function method2(){
+   //       return 'A';
+   //    }
+   // }
 
-   class B extends A
-   {
-      protected function method2()
-      {
-         return 'B';
-      }
-   }
+   // class B extends A
+   // {
+   //    protected function method2()
+   //    {
+   //       return 'B';
+   //    }
+   // }
 
-   $a = new A;
-   $b = new B;
+   // $a = new A;
+   // $b = new B;
 
-   echo $a->method1();
-   echo $a->method1();
+   // echo $a->method1();
+   // echo $a->method1();
 
    // class Cat{
    //    private $name;
@@ -169,3 +169,5 @@
    //    if($figure instanceof calculateSquare) echo $figure->calculateSquarre(), '<BR>';
    //    else echo "object doesn't implement interface";
    // }
+
+   
