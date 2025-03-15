@@ -81,7 +81,7 @@
 
 <!-- 27 Задание -->
 
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
    <meta charset="UTF-8">
@@ -112,4 +112,4 @@
          <button type="submit" class="btn btn-primary">Submit</button>
       </form>
 </body>
-</html> -->
+</html>
