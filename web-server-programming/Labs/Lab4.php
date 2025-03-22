@@ -1,53 +1,19 @@
 <?php
-   $c = 7;
-   $b = 6;
-   $a = &$c;
-   
-   function f(&$s){
-      ++$s;
-   }
-   echo $b."<BR>";
-   f($b);
-   echo $b."<BR>";
 
-   $a = 10;
-   $z = 'a';
+$a = 'Здравствуйте, Петрова Мария Ивановна! Пока';
+$reg = '/\b[А-ЯЕЁ][а-яеё]+\s([А-ЯЕЁ][а-яеё]+\s)[А-ЯЕЁ][а-яеё]+\b/u';
+preg_match($reg, $a, $matches);
+var_dump($matches);
+$name = $matches[1];
+echo '<BR>'.$name;
 
-   echo $$z.'<BR>';
+echo preg_replace('#x(ab)+x#', '!', 'xabx xababx xaabbx');
 
-   // $a=5;$b=2; $c=1;
-
-   // list($a,$b,$c)=F1($a,$b,$c);
-
-   // print "a=$a,b=$b, c=$c<BR>";
-
-   // function F1($d, $e, $f){
-   //    $d = $d + 1; $e--; $f++;
-   //    return array($d, $e, $f);
-   // }
-
-   // $d = 50; $e = 20; $f = 10;
-   // function F2(&$d, &$e, &$f){
-   //    $d++; $e--; $f++;
-   // }
-   // F2($d, $e, $f);
-   // print("a = $d, b = $e, c = $f<BR>")
-   
-   // $func = 'sin';
-   // $y = 30;
-   // $x = $y/180 * pi();
-   // $z = $func($x);
-   
-   // eval("\$z = $func(s$);")
-
-   echo "<a href = 'Lab4.php?XVI=&x='>XVI</a>";
-    if (!empty($_GET)){
-        foreach($_GET as $z=>$value) {
-            eval("\$$z='$value';");
-        }
-        echo  "Имя = $XVI, оклад = $value";
-        
-   }
+echo ('#a.+x#', '!', 'a23e4x qw x e');
+echo 'a + x<BR>';
+echo preg_replace('#a.+x#', '!', 'a23e4x qw x e');
+echo '<BR>';
+echo preg_replace('#a.+?x#', '!', 'a23e4x qw x e');
 
 
 
