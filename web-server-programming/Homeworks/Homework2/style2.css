@@ -1,0 +1,221 @@
+@font-face {
+   font-family: "Gogol";
+   src: url("../fonts/gogol_regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('/fonts/onest-2/WOFF/OnestBlack1602-hint.woff') format('woff');
+  src: url('/fonts/onest-2/WOFF/OnestBold1602-hint.woff') format('woff');
+  src: url('/fonts/onest-2/WOFF/OnestExtraBold1602-hint.woff') format('woff');
+  src: url('/fonts/onest-2/WOFF/OnestLight1602-hint.woff') format('woff');
+  src: url('/fonts/onest-2/WOFF/OnestMedium1602-hint.woff') format('woff');
+  src: url('/fonts/onest-2/WOFF/OnestRegular1602-hint.woff') format('woff');
+  src: url('/fonts/onest-2/WOFF/OnestThin1602-hint.woff') format('woff');
+  
+}
+
+* {
+   margin: 0;
+   list-style: none;
+   box-sizing: border-box;
+}
+
+body {
+   background-color: var(white); /*цвет фона*/
+   font-family: Onest, sans-serif; /*шрифт и формат*/
+   color: var(--main_color); /*цвет наследован body*/
+}
+
+header {
+   display: flex;
+   flex-direction: row;
+   font-size: 2.4rem;
+   justify-content: space-between;
+   padding-top: 10px;
+   padding-bottom: 10px;
+}
+
+.img__logo {
+   width: 200px;
+   height: 100px;
+}
+
+.button_class {
+   background-color: blue;
+   color: white;
+   border-radius: 10px;
+   border-color:black;  
+}
+
+.button__in-header { 
+   padding-top: 5px;
+   padding-bottom: 5px;
+   padding-right: 5px;
+}
+
+.section-forms {
+   margin: 10rem 5rem;
+}
+
+.first-fieldset {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.form-h1 {
+   text-align: center;
+   font-size: 2.4rem;
+}
+
+.form {
+   border: 1px solid white;
+   border-radius: 1rem;
+   padding: 20px;
+   background-color: var(--color_green_light);
+}
+
+.first-form-block {
+   display: flex;
+   flex-direction: column;
+   border-radius: 10px;
+   width: 100%;
+   gap: 10px;
+
+}
+
+.legend {
+   font-size: 2rem;
+   font-weight: bold;
+}
+
+.legend-2 {
+   font-size: 2rem;
+   font-weight: bold;
+}
+
+.for-span-in-from {
+   color: red;
+   font-size: 1.5rem;
+}
+
+
+.second-fieldset {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   border-radius: 10px;
+   width: 100%;
+}
+
+.for-two-fielsets {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.for-inputs {
+   padding: 0.5rem 0.5rem;
+   border-radius: 10px;
+   background-color: white;
+   color: black;
+}
+
+input::placeholder {
+   color: black;
+}
+
+.for-buttons {
+   display: flex;
+   padding: 1rem 2rem;
+   flex-direction: row;
+   justify-content: space-around;
+   border: 1px solid white;
+   border-radius: 1rem;
+}
+
+.for-button-fieldset {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.first-button {
+   padding: 2rem 3rem;
+   background-color: green;
+   border: none;
+   border-radius: 10px;
+   font-weight: bold;
+   font-size: 2rem;
+}
+
+.second-button {
+   padding: 2rem 3rem;
+   background-color: red;
+   border: none;
+   border-radius: 10px;
+   color: black;
+   font-weight: bold;
+   font-size: 2rem;
+}
+
+.labels {
+   font-size: 2rem;
+   font-weight: 500;
+}
+
+.for-blocks {
+   display: flex;
+   flex-direction: row;
+}
+
+.section-for-pseudo-classes-elements {
+   margin: 6rem 5rem;
+}
+
+.h2-for-second-section {
+   text-align: center;
+   font-size: 4rem;
+   margin-bottom: 2rem;
+}
+
+.for-dl {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.dt {
+   font-size: 3rem;
+   font-weight: bold;
+}
+
+.dt::first-letter {
+   color: var(--color_orange);
+}
+
+.dd {
+   font-size: 2rem;
+   font-weight: 500;
+}
+
+.dd::after {
+    content: "🛈";
+    padding-left: 6px;
+}
+
+.for-footer {
+   background-color: green;
+   color: black;
+   font-size: 2.4rem;
+}
+
+.address-footer {
+   margin-top: 40px;
+}
+
+.dog-logotype {
+   margin-top: 10px;
+   transform: rotate(30deg) scale(1.5) skew(18deg, 13deg);
+}

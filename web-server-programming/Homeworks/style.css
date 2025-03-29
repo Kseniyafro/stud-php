@@ -8,6 +8,11 @@ body {
    background-color: gray;
 }
 
+.img__logo {
+   width: 24px;
+   height: 30px;
+}
+
 
 .header{
    display: flex;
