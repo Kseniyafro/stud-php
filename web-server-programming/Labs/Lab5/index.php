@@ -1,54 +1,106 @@
-<?php require('header.php');?>
-<?php 
-  $mysqli = mysqli_connect('localhost', 'root', '', 'friends');
-  if(!mysqli_connect_errno()) echo mysqli_connect_error();
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-  //insert
-  if(!empty($_POST) && empty($_GET['id'])){
-    $sql = 'INSERT INTO `notes`
-          (`firstname`, `name`, `lastname`, `date`, `email`, `phone`, `comment`) 
-          VALUES (
-          \''.htmlspecialchars($_POST['firstname']).'\',
-          \''.htmlspecialchars($_POST['name']).'\',
-          \''.htmlspecialchars($_POST['lastname']).'\',
-          \''.$_POST['date'].'\',
-          \''.$_POST['email'].'\',
-          \''.$_POST['phone'].'\',
-          \''.htmlspecialchars($_POST['comment']).'\'
-          )';
-    mysqli_query($mysqli, $sql);
-    if (!mysqli_errno($mysqli)) echo mysqli_error($mysqli);
-  }
+$active_elem = $_GET['elem'] ?? 'menu';
+if (!in_array($active_elem, ['menu', 'add', 'delete'])) {
+    $active_elem = 'menu';
+}
 
-  //update
-  if (!empty($_POST) && !empty($_GET['id'])){
-    $sql = "UPDATE `notes` SET 
-          `firstname`='".htmlspecialchars($_POST['firstname'])."',
-          `name`='".htmlspecialchars($_POST['name'])."',
-          `lastname`='".htmlspecialchars($_POST['lastname'])."',
-          `date`='".$_POST['date']."',
-          `email`='".$_POST['email']."',
-          `phone`='".$_POST['phone']."',
-          `comment`='".htmlspecialchars($_POST['comment'])."' WHERE `id`=".$_GET['id'];
-    mysqli_query($mysqli, $sql);
-    if (!mysqli_errno($mysqli)) echo mysqli_error($mysqli);
-  }
+$mysqli = mysqli_connect('localhost', 'root', '', 'friends');
+if (mysqli_connect_errno()) {
+    die("Ошибка подключения к БД: " . mysqli_connect_error());
+}
 
-  //delete 
-  if(isset($_GET['id']) && empty($_POST)){
-    $sql = "DELETE FROM `notes` WHERE `id`=".$_GET['id'];
-    mysqli_query($mysqli, $sql);
-    if (!mysqli_errno($mysqli)) echo mysqli_error($mysqli);
-  }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_GET['id'])) {
+    $firstname = mysqli_real_escape_string($mysqli, $_POST['firstname'] ?? '');
+    $name = mysqli_real_escape_string($mysqli, $_POST['name'] ?? '');
+    $lastname = mysqli_real_escape_string($mysqli, $_POST['lastname'] ?? '');
+    $date = $_POST['date'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    $comment = mysqli_real_escape_string($mysqli, $_POST['comment'] ?? '');
 
-  if(!isset($_GET['elem'])) $_GET['elem'] = 'menu';
-  if ($_GET['elem'] == 'menu' || $_GET['elem'] == 'add' || $_GET['elem'] == 'delete') require( $_GET['elem'].'.php');
+    $sql = "INSERT INTO `notes` 
+            (`firstname`, `name`, `lastname`, `date`, `email`, `phone`, `comment`)
+            VALUES ('$firstname', '$name', '$lastname', '$date', '$email', '$phone', '$comment')";
+    
+    if (!mysqli_query($mysqli, $sql)) {
+        die("Ошибка добавления записи: " . mysqli_error($mysqli));
+    }
+    header("Location: index.php?elem=menu");
+    exit;
+}
 
-  mysqli_close($mysqli);
-  // if(isset($_GET['elem']) && $_GET['elem'] == 'add')
-  //   require('add.php');
-  // if(isset($_GET['elem']) && $_GET['elem'] == 'delete')
-  //   require('delete.php');
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_GET['id'])) {
+    $id = (int)$_GET['id'];
+    $firstname = mysqli_real_escape_string($mysqli, $_POST['firstname'] ?? '');
+    $name = mysqli_real_escape_string($mysqli, $_POST['name'] ?? '');
+    $lastname = mysqli_real_escape_string($mysqli, $_POST['lastname'] ?? '');
+    $date = $_POST['date'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    $comment = mysqli_real_escape_string($mysqli, $_POST['comment'] ?? '');
+
+    $sql = "UPDATE `notes` SET
+            `firstname` = '$firstname',
+            `name` = '$name',
+            `lastname` = '$lastname',
+            `date` = '$date',
+            `email` = '$email',
+            `phone` = '$phone',
+            `comment` = '$comment'
+            WHERE `id` = $id";
+    
+    if (!mysqli_query($mysqli, $sql)) {
+        die("Ошибка обновления записи: " . mysqli_error($mysqli));
+    }
+    header("Location: index.php?elem=menu");
+    exit;
+}
+
+if ($active_elem === 'delete' && isset($_GET['id'])) {
+    $id = (int)$_GET['id'];
+    $sql = "DELETE FROM `notes` WHERE `id` = $id";
+    
+    if (!mysqli_query($mysqli, $sql)) {
+        die("Ошибка удаления записи: " . mysqli_error($mysqli));
+    }
+    header("Location: index.php?elem=menu");
+    exit;
+}
+
+require('header.php');
+
+switch ($active_elem) {
+    case 'add':
+        require('add.php');
+        break;
+    case 'delete':
+        require('delete.php');
+        break;
+    case 'menu':
+    default:
+        $per_page = 10;
+        $current_page = max(1, $_GET['page'] ?? 1);
+        $offset = ($current_page - 1) * $per_page;
+
+        $sort_field = $_GET['sort'] ?? 'id';
+        $sort_order = $_GET['order'] ?? 'ASC';
+
+        $count_sql = "SELECT COUNT(*) as total FROM `notes`";
+        $count_result = mysqli_query($mysqli, $count_sql);
+        $total_rows = mysqli_fetch_assoc($count_result)['total'];
+        $total_pages = ceil($total_rows / $per_page);
+
+        $sql = "SELECT * FROM `notes` ORDER BY `$sort_field` $sort_order LIMIT $offset, $per_page";
+        $result = mysqli_query($mysqli, $sql);
+        
+        require('menu.php');
+        break;
+}
+
+mysqli_close($mysqli);
+
+require('footer.php');
 ?>
-
-<?php require('footer.php');?>

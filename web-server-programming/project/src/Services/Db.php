@@ -1,43 +1,41 @@
 <?php
-namespace src\Services;
+namespace src\Services; // Объявление пространства имен для класса Db
 
-class Db
+class Db // Объявление класса Db
 {
-    private $pdo;
-    private static $instance; // устанавливаем privatе, чтобы создать экземпляр класса можно было только через getInstance()
+    private $pdo; // Приватное свойство $pdo для хранения экземпляра PDO
+    private static $instance; // устанавливаем privatе, чтобы создать экземпляр класса можно было только через getInstance() - Приватное статическое свойство $instance для хранения экземпляра класса Db (реализация Singleton)
 
-    private function __construct()
+    private function __construct() // Приватный конструктор класса Db (запрещает создание экземпляров класса вне класса)
     {
-        $dbOptions = require('settings.php');  // загрузка натсроек БД
-        $this->pdo = new \PDO( // создаем объект PDO
-            'mysql:host='.$dbOptions['host'].';dbname='.$dbOptions['dbname'],
-            $dbOptions['user'],
-            $dbOptions['password']
+        $dbOptions = require('settings.php');  // загрузка натсроек БД - Загрузка настроек базы данных из файла settings.php
+        $this->pdo = new \PDO( // создаем объект PDO - Создание экземпляра PDO для подключения к базе данных
+            'mysql:host='.$dbOptions['host'].';dbname='.$dbOptions['dbname'], // Строка подключения к базе данных
+            $dbOptions['user'], // Имя пользователя базы данных
+            $dbOptions['password'] // Пароль пользователя базы данных
         );
-        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION); // обработка ошибок: при ошибках PDO будет выбрасывать исключения
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION); // обработка ошибок: при ошибках PDO будет выбрасывать исключения - Установка режима обработки ошибок PDO (выбрасывать исключения при ошибках)
     }
 
-    public function query(string $sql, array $params = [], string $className = 'stdClass'): array // запрос\массив праметров для запроса\в каком классе объекты будут
+    public function query(string $sql, array $params = [], string $className = 'stdClass'): array // запрос\массив праметров для запроса\в каком классе объекты будут - Публичный метод query для выполнения SQL-запросов
     {
-            $stmt = $this->pdo->prepare($sql); //pdo передает выражение
-            $stmt->execute($params); // подстановка параметров в запрос
-            $stmt->setFetchMode(\PDO::FETCH_CLASS, $className); // тут указываем PDO преобразовывать каждую строку в объект указанного класса
-            return $stmt->fetchAll(); // тут возвращаем массив объектов 
+            $stmt = $this->pdo->prepare($sql); //pdo передает выражение - Подготовка SQL-запроса с использованием PDO
+            $stmt->execute($params); // подстановка параметров в запрос - Выполнение подготовленного запроса с подстановкой параметров
+            $stmt->setFetchMode(\PDO::FETCH_CLASS, $className); // тут указываем PDO преобразовывать каждую строку в объект указанного класса - Установка режима выборки данных (каждую строку преобразовывать в объект указанного класса)
+            return $stmt->fetchAll(); // тут возвращаем массив объектов - Получение всех результатов запроса в виде массива объектов указанного класса
         
     }
 
-    public function getLastInsertId(): int // функция получения id последней записи 
+    public function getLastInsertId(): int // функция получения id последней записи - Публичный метод getLastInsertId для получения ID последней вставленной записи
     {
-        return (int)$this->pdo->lastInsertId(); // возвращаем id при полсденем insert
+        return (int)$this->pdo->lastInsertId(); // возвращаем id при полсденем insert - Возврат ID последней вставленной записи (приведение к типу integer)
      }
 
-    public static function getInstance(): self // тут реализуем синглтон
+    public static function getInstance(): self // тут реализуем синглтон - Статический метод getInstance для реализации паттерна Singleton
     {
-        if (self::$instance === null) { //если экземпляров не было до этого, то создаем новый
-            self::$instance = new self(); // объект создается и сохраняется 
+        if (self::$instance === null) { //если экземпляров не было до этого, то создаем новый - Проверка, был ли уже создан экземпляр класса
+            self::$instance = new self(); // объект создается и сохраняется - Создание нового экземпляра класса, если он еще не был создан
         }
-        return self::$instance; // возвращаем созданный объект для дальнейшей работы с БД
+        return self::$instance; // возвращаем созданный объект для дальнейшей работы с БД - Возврат экземпляра класса Db
     }
 }
-
- 
